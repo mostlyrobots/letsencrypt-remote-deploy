@@ -15,7 +15,7 @@ docker build -t certbot-auto .
 
 # Run container
 docker run --rm \
-    -p 80:${CONTAINER_PORT} \
+    -p 80:80 \
     -e TARGET_HOST="${TARGET_HOST}" \
     -e TARGET_PORT="${TARGET_PORT}" \
     -e SSH_PORT="${SSH_PORT}" \

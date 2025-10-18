@@ -22,7 +22,6 @@ Configuration options:
 - `TARGET_HOST`: UCG IP address (default: 10.0.0.1)
 - `TARGET_PORT`: HTTPS service port to check certificate (default: 443)
 - `SSH_PORT`: SSH port for deployment (default: 22)
-- `CONTAINER_PORT`: Port inside container for certbot (default: 80, can use 8080 for non-privileged)
 - `CERT_DOMAIN`: Your domain name
 - `TARGET_CERT_PATH`: Certificate path on UCG (default: /data/unifi-core/config/unifi-core.crt)
 - `TARGET_KEY_PATH`: Key path on UCG (default: /data/unifi-core/config/unifi-core.key)
