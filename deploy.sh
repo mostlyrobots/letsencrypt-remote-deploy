@@ -2,7 +2,8 @@
 
 # Configuration
 TARGET_HOST="10.0.0.1"
-TARGET_PORT="22"
+TARGET_PORT="443"  # HTTPS service port to check certificate
+SSH_PORT="22"      # SSH port for deployment
 CERT_DOMAIN="yourdomain.example.com"
 TARGET_CERT_PATH="/data/unifi-core/config/unifi-core.crt"
 TARGET_KEY_PATH="/data/unifi-core/config/unifi-core.key"
@@ -21,6 +22,7 @@ docker run --rm \
     -p 80:80 \
     -e TARGET_HOST="${TARGET_HOST}" \
     -e TARGET_PORT="${TARGET_PORT}" \
+    -e SSH_PORT="${SSH_PORT}" \
     -e CERT_DOMAIN="${CERT_DOMAIN}" \
     -e TARGET_CERT_PATH="${TARGET_CERT_PATH}" \
     -e TARGET_KEY_PATH="${TARGET_KEY_PATH}" \

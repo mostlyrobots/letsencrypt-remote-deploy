@@ -13,7 +13,8 @@ Automated Let's Encrypt certificate renewal and deployment for Ubiquiti Cloud Ga
 Edit `deploy.sh` with your settings:
 
 - `TARGET_HOST`: UCG IP address (default: 10.0.0.1)
-- `TARGET_PORT`: SSH port (default: 22)
+- `TARGET_PORT`: HTTPS service port to check certificate (default: 443)
+- `SSH_PORT`: SSH port for deployment (default: 22)
 - `CERT_DOMAIN`: Your domain name
 - `TARGET_CERT_PATH`: Certificate path on UCG (default: /data/unifi-core/config/unifi-core.crt)
 - `TARGET_KEY_PATH`: Key path on UCG (default: /data/unifi-core/config/unifi-core.key)
@@ -41,10 +42,10 @@ Add to crontab to run weekly:
 
 ## How It Works
 
-1. Container checks certificate expiry on target
+1. Container connects to TARGET_HOST:TARGET_PORT (HTTPS) and checks certificate expiry
 2. If renewal needed (< RENEW_DAYS remaining), runs certbot standalone on port 80
 3. Obtains certificate via HTTP-01 challenge
-4. Copies certificate and key to UCG via SCP
+4. Copies certificate and key to UCG via SCP (SSH port 22)
 5. Reloads nginx on UCG
 6. Container exits
 

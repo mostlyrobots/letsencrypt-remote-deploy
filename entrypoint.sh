@@ -11,9 +11,10 @@ set -e
 
 RENEW_DAYS=${RENEW_DAYS:-30}
 SSH_USER=${SSH_USER:-root}
+SSH_PORT=${SSH_PORT:-22}
 
 echo "=== Certbot Auto-Renew Container ==="
-echo "Target: ${SSH_USER}@${TARGET_HOST}:${TARGET_PORT}"
+echo "Target: ${TARGET_HOST}:${TARGET_PORT}"
 echo "Domain: ${CERT_DOMAIN}"
 echo "Checking certificate expiry..."
 
@@ -21,11 +22,11 @@ echo "Checking certificate expiry..."
 mkdir -p ~/.ssh
 echo "${SSH_KEY}" > ~/.ssh/id_rsa
 chmod 600 ~/.ssh/id_rsa
-ssh-keyscan -p ${TARGET_PORT} ${TARGET_HOST} >> ~/.ssh/known_hosts 2>/dev/null
+ssh-keyscan -p ${SSH_PORT} ${TARGET_HOST} >> ~/.ssh/known_hosts 2>/dev/null
 
-# Check current certificate expiry
-CERT_VALID=$(ssh -i ~/.ssh/id_rsa -p ${TARGET_PORT} ${SSH_USER}@${TARGET_HOST} \
-    "openssl x509 -in ${TARGET_CERT_PATH} -noout -checkend $((RENEW_DAYS * 86400)) && echo 'valid' || echo 'expired'")
+# Check current certificate expiry via service port
+CERT_VALID=$(echo | openssl s_client -connect ${TARGET_HOST}:${TARGET_PORT} -servername ${CERT_DOMAIN} 2>/dev/null | \
+    openssl x509 -noout -checkend $((RENEW_DAYS * 86400)) && echo 'valid' || echo 'expired')
 
 if [ "$CERT_VALID" = "valid" ]; then
     echo "Certificate is still valid for more than ${RENEW_DAYS} days. Exiting."
@@ -46,17 +47,17 @@ certbot certonly \
 echo "Certificate obtained. Deploying to target..."
 
 # Deploy certificate
-scp -i ~/.ssh/id_rsa -P ${TARGET_PORT} \
+scp -i ~/.ssh/id_rsa -P ${SSH_PORT} \
     /etc/letsencrypt/live/${CERT_DOMAIN}/fullchain.pem \
     ${SSH_USER}@${TARGET_HOST}:${TARGET_CERT_PATH}
 
-scp -i ~/.ssh/id_rsa -P ${TARGET_PORT} \
+scp -i ~/.ssh/id_rsa -P ${SSH_PORT} \
     /etc/letsencrypt/live/${CERT_DOMAIN}/privkey.pem \
     ${SSH_USER}@${TARGET_HOST}:${TARGET_KEY_PATH}
 
 # Reload nginx
 echo "Reloading nginx on target..."
-ssh -i ~/.ssh/id_rsa -p ${TARGET_PORT} ${SSH_USER}@${TARGET_HOST} \
+ssh -i ~/.ssh/id_rsa -p ${SSH_PORT} ${SSH_USER}@${TARGET_HOST} \
     "systemctl reload nginx"
 
 echo "=== Certificate renewal complete ==="
