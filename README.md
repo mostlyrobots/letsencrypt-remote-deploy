@@ -35,17 +35,54 @@ Configuration options:
 
 ## Usage
 
+### Initial Setup
+
+1. Clone the repository on your Docker/Podman host:
+
 ```bash
-# Copy and edit configuration
+git clone https://github.com/mostlyrobots/letsencrypt-remote-deploy.git
+cd letsencrypt-remote-deploy
+```
+
+2. Copy and edit configuration:
+
+```bash
 cp config.rc.example config.rc
-# Edit config.rc with your domain, email, paths, etc.
+# Edit config.rc with your domain, email, target paths, etc.
+```
 
-# Make deploy script executable
+3. Make deploy script executable:
+
+```bash
 chmod +x deploy.sh
+```
 
-# Run certificate renewal
+4. Build the container image:
+
+```bash
+# For Docker:
+docker build -t certbot-auto .
+
+# For Podman:
+podman build -t certbot-auto .
+```
+
+5. Configure port forwarding on your router/gateway:
+   - Forward external port 80 to your Docker host's PUBLISHED_PORT (default: 80)
+   - Example: WAN:80 → 192.168.1.100:80
+
+### Running Certificate Renewal
+
+```bash
 ./deploy.sh
 ```
+
+The script will:
+- Check if certificate renewal is needed
+- If yes, obtain new certificate via Let's Encrypt
+- Deploy certificate to target server
+- Reload service (if RELOAD_CMD is configured)
+- Exit
 
 ## Automation
 
