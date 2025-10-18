@@ -55,9 +55,11 @@ scp -i ~/.ssh/id_rsa -P ${SSH_PORT} \
     /etc/letsencrypt/live/${CERT_DOMAIN}/privkey.pem \
     ${SSH_USER}@${TARGET_HOST}:${TARGET_KEY_PATH}
 
-# Reload nginx
-echo "Reloading nginx on target..."
-ssh -i ~/.ssh/id_rsa -p ${SSH_PORT} ${SSH_USER}@${TARGET_HOST} \
-    "systemctl reload nginx"
+# Reload service if command provided
+if [ -n "${RELOAD_CMD}" ]; then
+    echo "Reloading service on target..."
+    ssh -i ~/.ssh/id_rsa -p ${SSH_PORT} ${SSH_USER}@${TARGET_HOST} \
+        "${RELOAD_CMD}"
+fi
 
 echo "=== Certificate renewal complete ==="

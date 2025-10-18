@@ -25,4 +25,5 @@ docker run --rm \
     -e SSH_KEY="${SSH_KEY}" \
     -e CERT_EMAIL="${CERT_EMAIL}" \
     -e RENEW_DAYS="${RENEW_DAYS}" \
+    -e RELOAD_CMD="${RELOAD_CMD}" \
     certbot-auto
