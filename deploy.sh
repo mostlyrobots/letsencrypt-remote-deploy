@@ -11,7 +11,7 @@ source config.rc
 SSH_KEY=$(cat ${SSH_KEY_FILE})
 
 # Build image
-docker build -t certbot-auto .
+docker build -t letsencrypt-remote-deploy .
 
 # Run container
 docker run --rm \
@@ -26,4 +26,4 @@ docker run --rm \
     -e CERT_EMAIL="${CERT_EMAIL}" \
     -e RENEW_DAYS="${RENEW_DAYS}" \
     -e RELOAD_CMD="${RELOAD_CMD}" \
-    certbot-auto
+    letsencrypt-remote-deploy

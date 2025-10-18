@@ -61,10 +61,10 @@ chmod +x deploy.sh
 
 ```bash
 # For Docker:
-docker build -t certbot-auto .
+docker build -t letsencrypt-remote-deploy .
 
 # For Podman:
-podman build -t certbot-auto .
+podman build -t letsencrypt-remote-deploy .
 ```
 
 5. Configure port forwarding on your router/gateway:
