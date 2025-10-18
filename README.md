@@ -4,7 +4,7 @@ Automated Let's Encrypt certificate renewal and deployment for Ubiquiti Cloud Ga
 
 ## Prerequisites
 
-1. Port forwarding configured on UCG: External port 80 → This container's host port 80
+1. Port forwarding configured on UCG: External port 80 → This container's host PUBLISHED_PORT
 2. Domain DNS pointing to your public IP
 3. SSH access to UCG with key-based authentication
 
@@ -64,5 +64,5 @@ Add to crontab to run weekly:
 ## Notes
 
 - Container only runs when needed (checks expiry first)
-- Requires port 80 to be forwarded during execution
+- Requires port 80 to be forwarded to PUBLISHED_PORT during execution
 - Certificate persists on UCG at /data/unifi-core/config/
