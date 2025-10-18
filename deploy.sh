@@ -1,15 +1,11 @@
 #!/bin/bash
 
-# Configuration
-TARGET_HOST="10.0.0.1"
-TARGET_PORT="443"  # HTTPS service port to check certificate
-SSH_PORT="22"      # SSH port for deployment
-CERT_DOMAIN="yourdomain.example.com"
-TARGET_CERT_PATH="/data/unifi-core/config/unifi-core.crt"
-TARGET_KEY_PATH="/data/unifi-core/config/unifi-core.key"
-SSH_KEY_FILE="${HOME}/.ssh/id_rsa"
-CERT_EMAIL="admin@example.com"
-RENEW_DAYS="30"
+# Load configuration
+if [ ! -f config.rc ]; then
+    echo "Error: config.rc not found. Copy config.rc.example to config.rc and edit."
+    exit 1
+fi
+source config.rc
 
 # Read SSH key
 SSH_KEY=$(cat ${SSH_KEY_FILE})

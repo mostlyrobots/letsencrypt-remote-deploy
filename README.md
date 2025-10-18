@@ -10,7 +10,14 @@ Automated Let's Encrypt certificate renewal and deployment for Ubiquiti Cloud Ga
 
 ## Configuration
 
-Edit `deploy.sh` with your settings:
+Copy the example config and edit with your settings:
+
+```bash
+cp config.rc.example config.rc
+# Edit config.rc with your values
+```
+
+Configuration options:
 
 - `TARGET_HOST`: UCG IP address (default: 10.0.0.1)
 - `TARGET_PORT`: HTTPS service port to check certificate (default: 443)
@@ -25,6 +32,10 @@ Edit `deploy.sh` with your settings:
 ## Usage
 
 ```bash
+# Copy and edit configuration
+cp config.rc.example config.rc
+# Edit config.rc with your domain, email, etc.
+
 # Make deploy script executable
 chmod +x deploy.sh
 
